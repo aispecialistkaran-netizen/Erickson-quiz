@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase/config';
-import { fetchAdminLeads } from '@/lib/firebase/services';
+import { fetchAdminLeads, deleteLeadRecord } from '@/lib/firebase/services';
 import { AdminDashboard } from '@/components/admin/AdminDashboard';
 import { LeadDoc } from '@/types';
 
@@ -36,6 +36,14 @@ export default function AdminPage() {
     setLeads(fetched || []);
   };
 
+  const handleDeleteLead = async (leadId: string) => {
+    if (!leadId) return;
+    const success = await deleteLeadRecord(leadId);
+    if (success) {
+      setLeads((prev) => prev.filter((l) => l.id !== leadId));
+    }
+  };
+
   const handleLogout = async () => {
     sessionStorage.removeItem('erickson_admin_authed');
     try {
@@ -60,5 +68,11 @@ export default function AdminPage() {
     return null;
   }
 
-  return <AdminDashboard leads={leads} onLogout={handleLogout} />;
+  return (
+    <AdminDashboard
+      leads={leads}
+      onLogout={handleLogout}
+      onDeleteLead={handleDeleteLead}
+    />
+  );
 }

@@ -16,10 +16,10 @@ import {
   LogOut,
   BarChart3,
   Calendar,
-  ShieldCheck,
   X,
   FileText,
   UserCheck,
+  Trash2,
 } from 'lucide-react';
 import {
   BarChart,
@@ -36,19 +36,24 @@ import {
 interface AdminDashboardProps {
   leads: LeadDoc[];
   onLogout: () => void;
+  onDeleteLead?: (leadId: string) => Promise<void>;
 }
 
-export const AdminDashboard: React.FC<AdminDashboardProps> = ({ leads, onLogout }) => {
+export const AdminDashboard: React.FC<AdminDashboardProps> = ({
+  leads,
+  onLogout,
+  onDeleteLead,
+}) => {
   const [search, setSearch] = useState('');
   const [tempFilter, setTempFilter] = useState<string>('all');
   const [pathFilter, setPathFilter] = useState<string>('all');
   const [selectedLead, setSelectedLead] = useState<LeadDoc | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // Compute Metrics
   const totalLeads = leads.length;
   const hotLeads = leads.filter((l) => l.leadTemperature === 'hot').length;
   const warmLeads = leads.filter((l) => l.leadTemperature === 'warm').length;
-  const nurtureLeads = leads.filter((l) => l.leadTemperature === 'nurture').length;
 
   const avgScore =
     totalLeads > 0
@@ -94,6 +99,24 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ leads, onLogout 
 
     return matchesSearch && matchesTemp && matchesPath;
   });
+
+  // Delete Handler
+  const handleDelete = async (lead: LeadDoc) => {
+    if (!lead.id) return;
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete ${lead.firstName} ${lead.lastName} (${lead.email})? This action cannot be undone.`
+    );
+    if (!confirmDelete) return;
+
+    setDeletingId(lead.id);
+    if (onDeleteLead) {
+      await onDeleteLead(lead.id);
+    }
+    if (selectedLead?.id === lead.id) {
+      setSelectedLead(null);
+    }
+    setDeletingId(null);
+  };
 
   // CSV Export Handler
   const exportCSV = () => {
@@ -332,7 +355,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ leads, onLogout 
                   <th className="py-3 px-3">Career Path</th>
                   <th className="py-3 px-3">Timeline</th>
                   <th className="py-3 px-3">Date</th>
-                  <th className="py-3 px-3 text-right">User Analytics</th>
+                  <th className="py-3 px-3 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -395,20 +418,32 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ leads, onLogout 
                     </td>
 
                     <td className="py-3 px-3 text-right">
-                      <button
-                        onClick={() => setSelectedLead(lead)}
-                        className="inline-flex items-center gap-1 text-[#167FA3] hover:text-[#FFD978] font-bold transition-colors bg-[#167FA3]/15 px-2.5 py-1 rounded-lg border border-[#167FA3]/30"
-                      >
-                        <Eye className="w-3.5 h-3.5" />
-                        <span>Inspect Analytics</span>
-                      </button>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => setSelectedLead(lead)}
+                          className="inline-flex items-center gap-1 text-[#167FA3] hover:text-[#FFD978] font-bold transition-colors bg-[#167FA3]/15 px-2.5 py-1 rounded-lg border border-[#167FA3]/30"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>Inspect</span>
+                        </button>
+
+                        <button
+                          onClick={() => handleDelete(lead)}
+                          disabled={deletingId === lead.id}
+                          className="inline-flex items-center gap-1 text-red-400 hover:text-red-300 font-bold transition-colors bg-red-500/15 hover:bg-red-500/25 px-2.5 py-1 rounded-lg border border-red-500/30 disabled:opacity-50"
+                          title="Delete Lead Entry"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>{deletingId === lead.id ? '...' : 'Delete'}</span>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
 
                 {filteredLeads.length === 0 && (
                   <tr>
-                    <td colSpan={8} className="py-8 text-center text-[#64757D]">
+                    <td colSpan={9} className="py-8 text-center text-[#64757D]">
                       No user leads match the specified criteria.
                     </td>
                   </tr>
@@ -541,7 +576,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ leads, onLogout 
               </div>
             </div>
 
-            <div className="pt-4 border-t border-white/10 flex justify-end">
+            {/* Modal Actions */}
+            <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+              <button
+                onClick={() => handleDelete(selectedLead)}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-red-400 hover:text-red-300 bg-red-500/15 hover:bg-red-500/25 px-3 py-2 rounded-xl border border-red-500/30 transition-colors"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>Delete Lead Entry</span>
+              </button>
+
               <Button variant="outline" size="sm" onClick={() => setSelectedLead(null)}>
                 Close User Analytics
               </Button>

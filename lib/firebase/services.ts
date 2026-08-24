@@ -9,6 +9,7 @@ import {
   orderBy,
   limit,
   updateDoc,
+  deleteDoc,
 } from 'firebase/firestore';
 import { db } from './config';
 import {
@@ -238,3 +239,17 @@ export async function fetchAdminLeads(): Promise<LeadDoc[]> {
     return [];
   }
 }
+
+// Delete Lead Record from Firestore
+export async function deleteLeadRecord(leadId: string): Promise<boolean> {
+  if (!leadId) return false;
+  try {
+    const leadRef = doc(db, 'leads', leadId);
+    await deleteDoc(leadRef);
+    return true;
+  } catch (err) {
+    console.error('Error deleting lead record from Firestore:', err);
+    return false;
+  }
+}
+
