@@ -245,7 +245,7 @@ function AssessmentEngine() {
   };
 
   return (
-    <div className={`relative ${stage === 'quiz' ? 'h-screen max-h-screen overflow-hidden' : 'min-h-screen'} w-full flex flex-col justify-between p-4 sm:p-6 select-none`}>
+    <div className={`relative ${stage === 'quiz' ? 'h-screen h-[100dvh] max-h-[100dvh] overflow-hidden' : 'min-h-screen'} w-full flex flex-col justify-between p-2 sm:p-6 select-none`}>
       <AnimatedConstellation progressStage={progressStage} />
 
       {/* Header */}

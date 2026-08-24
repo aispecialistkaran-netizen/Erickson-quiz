@@ -63,12 +63,12 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="relative h-screen max-h-screen w-full flex flex-col justify-between overflow-hidden select-none p-4 sm:p-6">
+    <div className="relative h-screen h-[100dvh] max-h-[100dvh] w-full flex flex-col justify-between overflow-hidden select-none p-3 sm:p-6">
       {/* Animated Constellation Background */}
       <AnimatedConstellation progressStage={1} />
 
       {/* Header Bar */}
-      <header className="relative z-10 w-full max-w-7xl mx-auto px-4 py-2 flex items-center justify-between shrink-0">
+      <header className="relative z-10 w-full max-w-7xl mx-auto px-2 sm:px-4 py-1 sm:py-2 flex items-center justify-between shrink-0">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -89,13 +89,13 @@ export default function LandingPage() {
       </header>
 
       {/* Main Hero Container */}
-      <main className="relative z-10 w-full max-w-4xl mx-auto px-4 py-2 text-center my-auto flex flex-col items-center justify-center">
+      <main className="relative z-10 w-full max-w-4xl mx-auto px-2 sm:px-4 py-1 sm:py-2 text-center my-auto flex flex-col items-center justify-center">
         {/* Eyebrow Label */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#167FA3]/25 border border-[#167FA3]/40 text-xs sm:text-sm font-semibold text-[#FFD978] mb-4 shadow-lg shadow-black/20"
+          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#167FA3]/25 border border-[#167FA3]/40 text-xs sm:text-sm font-semibold text-[#FFD978] mb-2 sm:mb-4 shadow-lg shadow-black/20"
         >
           <span>3-Minute Digital Assessment</span>
         </motion.div>
@@ -105,7 +105,7 @@ export default function LandingPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
-          className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1] mb-4"
+          className="text-2xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.15] mb-2 sm:mb-4"
         >
           Are You Ready to Become a{' '}
           <span className="text-gradient-gold">Professional Coach?</span>
@@ -116,7 +116,7 @@ export default function LandingPage() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-sm sm:text-lg text-white/85 max-w-2xl mx-auto leading-relaxed mb-6 font-normal"
+          className="text-xs sm:text-lg text-white/85 max-w-2xl mx-auto leading-relaxed mb-4 sm:mb-6 font-normal"
         >
           Discover your coaching readiness in just 3 minutes and get a personalised snapshot of your strengths, motivations and next steps.
         </motion.p>
@@ -126,13 +126,13 @@ export default function LandingPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: 'spring', stiffness: 350, damping: 25, delay: 0.6 }}
-          className="flex flex-col items-center gap-2 mb-6"
+          className="flex flex-col items-center gap-1.5 sm:gap-2 mb-4 sm:mb-6"
         >
           <Button variant="primary" size="lg" onClick={handleStartClick} showArrow>
             Take the 3-Minute Assessment
           </Button>
 
-          <span className="text-xs sm:text-sm text-[#64757D] font-medium">
+          <span className="text-[11px] sm:text-sm text-[#64757D] font-medium">
             12 questions · Instant personalised results
           </span>
         </motion.div>
@@ -142,7 +142,7 @@ export default function LandingPage() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.7 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto w-full"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 max-w-3xl mx-auto w-full"
         >
           {[
             'Understand your readiness',
@@ -151,9 +151,9 @@ export default function LandingPage() {
           ].map((trustText, idx) => (
             <div
               key={idx}
-              className="glass-card p-3 rounded-xl border border-white/10 flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold text-white/90"
+              className="glass-card p-2 sm:p-3 rounded-xl border border-white/10 flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold text-white/90"
             >
-              <CheckCircle2 className="w-4 h-4 text-[#1F9D73] shrink-0" />
+              <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1F9D73] shrink-0" />
               <span>{trustText}</span>
             </div>
           ))}
@@ -161,12 +161,12 @@ export default function LandingPage() {
       </main>
 
       {/* Subtle Credibility Statement Footer */}
-      <footer className="relative z-10 w-full max-w-7xl mx-auto px-4 py-2 text-center text-xs text-[#64757D] border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-2 shrink-0">
-        <p className="max-w-xl mx-auto sm:mx-0 text-left">
+      <footer className="relative z-10 w-full max-w-7xl mx-auto px-2 sm:px-4 py-1 sm:py-2 text-center text-[10px] sm:text-xs text-[#64757D] border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-1 sm:gap-2 shrink-0">
+        <p className="max-w-xl mx-auto sm:mx-0 text-left hidden sm:block">
           Created for professionals exploring coaching, leadership development and meaningful career transitions.
         </p>
 
-        <div className="flex items-center gap-4 text-[#64757D]">
+        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4 text-[#64757D]">
           <span className="flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-[#1F9D73]" />
             ICF Accredited Context
