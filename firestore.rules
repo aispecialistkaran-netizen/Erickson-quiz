@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to verify admin authentication
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.token.email.matches('.*@erickson\\.co\\.in$') ||
+        request.auth.token.admin == true
+      );
+    }
+
+    // Public Session Documents (Allow creation and update for active quiz)
+    match /assessmentSessions/{sessionId} {
+      allow create: if true;
+      allow update: if request.resource.data.sessionId == sessionId;
+      allow read: if isAdmin();
+    }
+
+    // Public Assessment Responses (Allow creation only, no public enumeration)
+    match /assessmentResponses/{responseId} {
+      allow create: if true;
+      allow read: if isAdmin();
+    }
+
+    // Lead Records (Allow creation via API / client, forbid public read/list)
+    match /leads/{leadId} {
+      allow create: if request.resource.data.email != null && request.resource.data.firstName != null;
+      allow update: if isAdmin() || (resource != null && resource.data.email == request.resource.data.email);
+      allow read, delete: if isAdmin();
+    }
+  }
+}
